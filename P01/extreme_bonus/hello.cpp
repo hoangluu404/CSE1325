@@ -2,9 +2,8 @@
 #include<string>
 
 int main(){
-	std::string whoami;
-	whoami=system("whoami");
-	std::cout << "Hello " << whoami <<std::endl;
+	
+	std::cout << "Hello "<< getenv("USER")<<std::endl;
 
 return 0;	
 
