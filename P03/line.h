@@ -1,4 +1,4 @@
-#include "line.cpp"
+
 #include<string>
 class Line{
   public:

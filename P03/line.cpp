@@ -1,11 +1,13 @@
-#include<iostream>
 #include<string>
+#include<cmath>
+#include "line.h"
 
-int main(){
+Line::Line(double x1,double y1, double x2, double y2): _x1{x1},_x2{x2},_y1{y1},_y2{y2} {};
 
-int x1=1,x2=2,x3=3,x4=4;
-std::string s;
-s="(" + std::to_string(x1) + "," + std::to_string(x2) + ")" + "(" + std::to_string(x3) + "," + std::to_string(x4) + ")";
-std::cout<< s <<std::endl;
-
+std::string Line::to_string(){
+	std::string s="(" + std::to_string(_x1) + "," + 		std::to_string(_y1) + ")" + "-"+ "(" + std::to_string(_x2) 			+ "," + std::to_string(_y2) + ")"; 
+	return s;
+}
+double Line::length(){
+	return sqrt( pow(_x1-_x2,2)  +  pow(_y1-_y2,2) );
 }
