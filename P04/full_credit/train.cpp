@@ -1,19 +1,10 @@
 #include "stock.h"
 #include "locomotive.h"
 #include "coach.h"
-class Train{
-public:
-  void add_locomotive(Locomotive& locomotive);
-  void add_coach(Coach& coach);
-  double speed(double minutes);
-  std::string to_art();
-private:
-  std::vector<Locomotive*> _locomotives;
-  std::vector<Coach*> _coaches;
-};
-
-void Train::add_locomotive(Locomotive& locomotive){_locomotives.push_back(&locomotive);}
-void Train::add_coach(Coach& coach){_coaches.push_back(&coach);}
+#include "train.h"
+#include<iostream>
+void Train::add_locomotive(Locomotive& locomotive){_locomotives.push_back(&locomotive);std::cout<<"loco added to train"<<std::endl;}
+void Train::add_coach(Coach& coach){_coaches.push_back(&coach);std::cout<<"coach added to train"<<std::endl;}
 double Train::speed(double minutes){
   int total_power=0;
   int total_weight=0;
@@ -25,7 +16,19 @@ double Train::speed(double minutes){
     total_weight+=_coaches[i]->weight();
   return std::sqrt(2*total_power*minutes*60/total_weight);
 }
-//std::string Train::to_art(){}
+std::string Train::to_art(){
+  std::string str;
+  
+  for(int row=0;row<6;row++){
+    for(int i=0;i<_locomotives.size();i++)
+      str+=_locomotives[i]->ascii_art(row);
+    for(int i=0;i<_coaches.size();i++)
+      str+=_coaches[i]->ascii_art(row);
+    str+="\n";
+  }
+
+return str;
+}
 
 
 

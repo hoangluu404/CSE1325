@@ -1,7 +1,7 @@
 CXXFLAGS = --std=c++17
 
-lines: main.o line.o
-	$(CXX) $(CXXFLAGS) main.o line.o -o lines
+train: main.o stock.o locomotive.o coach.o train.o
+	$(CXX) $(CXXFLAGS) main.o stock.o locomotive.o coach.o train.o -o train
 
 main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp -o main.o
@@ -19,5 +19,5 @@ train.o: train.cpp *.h
 	$(CXX) $(CXXFLAGS) -c train.cpp -o train.o
 
 clean:
-	rm -f *.o *.gch ~* a.out lines
+	rm -f *.o *.gch ~* a.out train 
 

@@ -3,7 +3,7 @@
 
 class Coach:public Stock{
 public:
-  Coach(double weight);
+  Coach();
   void add_passengers(int passengers);
   double weight() override;
 private:

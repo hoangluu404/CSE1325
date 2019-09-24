@@ -1,7 +1,8 @@
 #include "stock.h"
 #include  "coach.h"
-
-Coach::Coach(double weight=28000):Stock::Stock(weight){
+#include<iostream>
+Coach::Coach(){std::cout<<"Added Coach"<<std::endl;
+  Stock(28000);
   _art = { // Coach
   "               ",
   " ______________",

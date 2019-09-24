@@ -1,7 +1,9 @@
 #include "stock.h"
 #include "locomotive.h"
-
-Locomotive::Locomotive(double weight=80000,double power=13500):Stock::Stock(weight),_power{power}{
+#include<iostream>
+Locomotive::Locomotive(){ std::cout<<"Added Loco"<<std::endl;
+  _power=13500;
+  Stock(80000);
   _art={ // Locomotive
   "       * # @ ",
   "     . ______",
