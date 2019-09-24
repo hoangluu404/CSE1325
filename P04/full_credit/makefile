@@ -20,4 +20,6 @@ train.o: train.cpp *.h
 
 clean:
 	rm -f *.o *.gch ~* a.out train 
+add:
+	git add main.cpp stock.h stock.cpp locomotive.h locomotive.cpp coach.h coach.cpp train.h train.cpp makefile
 
