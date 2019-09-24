@@ -1,7 +1,7 @@
 #include "stock.h"
 #include  "coach.h"
 #include<iostream>
-Coach::Coach(){std::cout<<"Added Coach"<<std::endl;
+Coach::Coach(){
   Stock(28000);
   _art = { // Coach
   "               ",

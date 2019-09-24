@@ -11,6 +11,7 @@ int w=7;
 Train train;
 Locomotive locomotive;
 Coach coach;
+
 int input=0;
 do{
   std::cout<<"================================"<<std::endl;
@@ -26,12 +27,24 @@ for(int i=0;i<5*w+7;i++) std::cout<<"-"; std::cout<<std::endl;
 
   std::cin>>input;
 
+  
+/*
   if(input==1)
 	train.add_locomotive(locomotive);
   else if(input==2)
 	train.add_coach(coach);
   else if(input==9)
 	train = Train();
+  else if(input==0) std::cout<<"EXIT"<<std::endl;
+*/  switch(input){
+	case 1: train.add_locomotive(locomotive); break;
+	case 2: train.add_coach(coach); break;
+	case 9: train = Train(); break;
+	case 0: std::cout<<"EXIT"<<std::endl; break;
+	default: std::cout<<"INVALID INPUT"<<std::endl;
+
+
+  }
 
 
 

@@ -3,8 +3,8 @@
 #include "coach.h"
 #include "train.h"
 #include<iostream>
-void Train::add_locomotive(Locomotive& locomotive){_locomotives.push_back(&locomotive);std::cout<<"loco added to train"<<std::endl;}
-void Train::add_coach(Coach& coach){_coaches.push_back(&coach);std::cout<<"coach added to train"<<std::endl;}
+void Train::add_locomotive(Locomotive& locomotive){_locomotives.push_back(&locomotive);}
+void Train::add_coach(Coach& coach){_coaches.push_back(&coach);}
 double Train::speed(double minutes){
   int total_power=0;
   int total_weight=0;
