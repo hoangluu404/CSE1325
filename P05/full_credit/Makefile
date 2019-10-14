@@ -26,5 +26,5 @@ view.o: view.cpp *.h
 clean:
 	rm -f *.o *.gch a.out sweets sweets-cli
 add:
-	git add *.cpp *.h Makefile
+	git add *.cpp *.h Makefile ./Scrum_MUSS.ods
 

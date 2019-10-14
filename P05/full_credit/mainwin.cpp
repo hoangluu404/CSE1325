@@ -121,12 +121,12 @@ Mainwin::~Mainwin() { }
 	}
 
 	void Mainwin::on_about_click(){
-	std::cout<<"about"<<std::endl;
+	Glib::ustring s = "This program is created by\nHoang Luu: 1000969998\nProfessor RICE: CSE1325";
+	Gtk::MessageDialog dialog(*this, s, true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+	dialog.run();
 	}
 
-	void Mainwin::on_quit_click(){
-	std::cout<<"quit"<<std::endl;
-	}
+	void Mainwin::on_quit_click(){	std::exit(0);	}
 
 
 	void Mainwin::reset_sensitivity(){
