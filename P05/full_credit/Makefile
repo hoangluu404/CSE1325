@@ -3,8 +3,8 @@ GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 
 all: sweets sweets-cli
 
-sweets: main-gui.o mainwin.o order.o store.o sweet.o view.o  *.h
-	$(CXX) $(CXXFLAGS) main-gui.o mainwin.o order.o store.o sweet.o $(GTKFLAGS) -o sweets
+sweets: main-gui.o mainwin.o order.o store.o sweet.o view.o entrydialog.o  *.h
+	$(CXX) $(CXXFLAGS) main-gui.o mainwin.o order.o store.o sweet.o entrydialog.o $(GTKFLAGS) -o sweets
 sweets-cli:  main-cli.o controller.o order.o store.o sweet.o view.o *.h
 	$(CXX) $(CXXFLAGS) main-cli.o controller.o view.o order.o store.o sweet.o -o sweets-cli
 main-gui.o: main-gui.cpp *.h
@@ -23,6 +23,8 @@ sweet.o: sweet.cpp *.h
 	$(CXX) $(CXXFLAGS) -c sweet.cpp -o sweet.o
 view.o: view.cpp *.h
 	$(CXX) $(CXXFLAGS) -c view.cpp -o view.o
+entrydialog.o: entrydialog.cpp *.h
+	$(CXX) $(CXXFLAGS) -c entrydialog.cpp $(GTKFLAGS) -o entrydialog.o
 
 clean:
 	rm -f *.o *.gch a.out sweets sweets-cli

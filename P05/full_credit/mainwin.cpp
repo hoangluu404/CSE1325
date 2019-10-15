@@ -1,6 +1,6 @@
 #include "mainwin.h"
 #include "entrydialog.h"
-
+#include <string>
 Mainwin::Mainwin() : Mainwin{*(new Store)} { }
 Mainwin::Mainwin(Store& store) : _store{&store} {
 
@@ -69,8 +69,11 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
     // /////////////
     // T O O L B A R
     // Add a toolbar to the vertical box just below the menu (bonus level)
-	Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
-	vbox->add(*toolbar);
+//	Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
+//	vbox->add(*toolbar);
+//	Gtk::Button *button = Gtk::manage(new Gtk::Button);
+//	toolbar->add(button);
+//	toolbar->show_all();
 
 
 
@@ -106,8 +109,16 @@ Mainwin::~Mainwin() { }
 	}
 
 	void Mainwin::on_add_sweet_click(){
-	Gtk::MessageDialog dialog(*this,"add sweet");
+	EntryDialog name{*this, "name of sweet: "};
+	name.run();
+	EntryDialog price{*this, "price of sweet: "};
+	price.run();
+	std::string::size_type size;
+	double item_price = std::stod(price.get_text(),&size);
+	Gtk::MessageDialog dialog(*this,name.get_text() + " is " + price.get_text());
 	dialog.run();
+	Sweet sweet(name.get_text(),item_price);
+	_store->add(sweet);
 	}
 
 	void Mainwin::on_list_sweets_click(){
