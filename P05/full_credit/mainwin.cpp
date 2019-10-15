@@ -7,7 +7,7 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
     // /////////////////
     // G U I   S E T U P
     // /////////////////
-	set_default_size(400,200);
+	set_default_size(400,100);
 	set_title("Main win");
     // Set up a vertical box to hold the main window elements
 	Gtk::Box* vbox = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL,0));
@@ -113,7 +113,10 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
     // S T A T U S   B A R   D I S P L A Y
     // Provide a status bar for transient messages
 	Gtk::Label* status = Gtk::manage(new Gtk::Label("status bar"));
+	Gtk::Label* status2 = Gtk::manage(new Gtk::Label("-------------------------------"));
 	status->set_hexpand(true);
+	status2->set_hexpand(true);
+	vbox->add(*status2);
 	vbox->add(*status);
     // Make the vertical box and everything in it visible
 	vbox->show_all();
@@ -126,6 +129,8 @@ Mainwin::~Mainwin() { }
 // /////////////////
 	void Mainwin::on_new_store_click(){
 	_store = new Store();
+	Gtk::MessageDialog dialog(*this,"added new store");
+	dialog.run();
 	}
 
 	void Mainwin::on_add_sweet_click(){
@@ -157,8 +162,11 @@ Mainwin::~Mainwin() { }
 	}
 
 	void Mainwin::on_about_click(){
-	Glib::ustring s = "This program is created by\nHoang Luu: 1000969998\nProfessor RICE: CSE1325";
-	Gtk::MessageDialog dialog(*this, s, true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
+	Glib::ustring st = R"(<span size='24000' weight='bold'>Sweetness</span>
+<span size='large'>Hoang Luu: 1000969998</span>
+<span size='small'>Professor RICE: CSE1325 P05</span>
+<span size='small'>icons are included in gtkmm libary</span>)";
+	Gtk::MessageDialog dialog(*this, st, true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
 	dialog.run();
 	}
 
