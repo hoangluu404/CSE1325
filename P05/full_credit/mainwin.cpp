@@ -1,4 +1,5 @@
 #include "mainwin.h"
+#include "entrydialog.h"
 
 Mainwin::Mainwin() : Mainwin{*(new Store)} { }
 Mainwin::Mainwin(Store& store) : _store{&store} {
@@ -101,23 +102,27 @@ Mainwin::~Mainwin() { }
 // C A L L B A C K S
 // /////////////////
 	void Mainwin::on_new_store_click(){
-	std::cout<<"New Store"<<std::endl;
+	_store = new Store();
 	}
 
 	void Mainwin::on_add_sweet_click(){
-	std::cout<<"add sweet"<<std::endl;
+	Gtk::MessageDialog dialog(*this,"add sweet");
+	dialog.run();
 	}
 
 	void Mainwin::on_list_sweets_click(){
-	std::cout<<"list sweets"<<std::endl;
+	Gtk::MessageDialog dialog(*this,"listing sweets");
+	dialog.run();
 	}
 
 	void Mainwin::on_place_order_click(){
-	std::cout<<"place order"<<std::endl;
+	Gtk::MessageDialog dialog(*this,"place order");
+	dialog.run();
 	}
 
 	void Mainwin::on_list_orders_click(){
-	std::cout<<"list order"<<std::endl;
+	Gtk::MessageDialog dialog(*this,"listing orders");
+	dialog.run();
 	}
 
 	void Mainwin::on_about_click(){

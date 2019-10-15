@@ -3,7 +3,7 @@ GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 
 all: sweets sweets-cli
 
-sweets: main-gui.o mainwin.o order.o store.o sweet.o view.o *.h
+sweets: main-gui.o mainwin.o order.o store.o sweet.o view.o  *.h
 	$(CXX) $(CXXFLAGS) main-gui.o mainwin.o order.o store.o sweet.o $(GTKFLAGS) -o sweets
 sweets-cli:  main-cli.o controller.o order.o store.o sweet.o view.o *.h
 	$(CXX) $(CXXFLAGS) main-cli.o controller.o view.o order.o store.o sweet.o -o sweets-cli
@@ -23,8 +23,9 @@ sweet.o: sweet.cpp *.h
 	$(CXX) $(CXXFLAGS) -c sweet.cpp -o sweet.o
 view.o: view.cpp *.h
 	$(CXX) $(CXXFLAGS) -c view.cpp -o view.o
+
 clean:
 	rm -f *.o *.gch a.out sweets sweets-cli
 add:
-	git add *.cpp *.h Makefile ./Scrum_MUSS.ods
+	git add *.cpp *.h Makefile 
 
