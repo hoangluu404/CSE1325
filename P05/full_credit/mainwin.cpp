@@ -69,11 +69,30 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
     // /////////////
     // T O O L B A R
     // Add a toolbar to the vertical box just below the menu (bonus level)
-//	Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
-//	vbox->add(*toolbar);
-//	Gtk::Button *button = Gtk::manage(new Gtk::Button);
-//	toolbar->add(button);
-//	toolbar->show_all();
+	Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
+	vbox->add(*toolbar);
+
+	Gtk::ToolButton *new_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
+	new_button->set_tooltip_markup("add new store");
+	new_button->signal_clicked().connect([this]{this->on_new_store_click();});
+	toolbar->append(*new_button);
+
+	Gtk::ToolButton *quit_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::QUIT));
+	quit_button->set_tooltip_markup("quit");
+	quit_button->signal_clicked().connect([this]{this->on_quit_click();});
+	toolbar->append(*quit_button);
+
+	Gtk::ToolButton *new_sweet_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
+	new_sweet_button->set_tooltip_markup("add extra sweetness");
+	new_sweet_button->signal_clicked().connect([this]{this->on_add_sweet_click();});
+	toolbar->append(*new_sweet_button);
+
+	Gtk::ToolButton *list_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::QUIT));
+	list_button->set_tooltip_markup("list sweets");
+	list_button->signal_clicked().connect([this]{this->on_list_sweets_click();});
+	toolbar->append(*list_button);
+
+
 
 
 
@@ -93,8 +112,9 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
     // ///////////////////////////////////    
     // S T A T U S   B A R   D I S P L A Y
     // Provide a status bar for transient messages
-
-
+	Gtk::Label* status = Gtk::manage(new Gtk::Label("status bar"));
+	status->set_hexpand(true);
+	vbox->add(*status);
     // Make the vertical box and everything in it visible
 	vbox->show_all();
 }
@@ -142,7 +162,10 @@ Mainwin::~Mainwin() { }
 	dialog.run();
 	}
 
-	void Mainwin::on_quit_click(){	std::exit(0);	}
+	void Mainwin::on_quit_click(){	
+	Gtk::MessageDialog dialog(*this,"EXIT");
+	dialog.run();
+	std::exit(0);	}
 
 
 	void Mainwin::reset_sensitivity(){
