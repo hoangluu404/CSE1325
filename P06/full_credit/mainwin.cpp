@@ -19,7 +19,6 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
  	Gtk::MenuBar* menubar = Gtk::manage(new Gtk::MenuBar());
 	vbox->pack_start(*menubar, Gtk::PACK_SHRINK,0);
 
-
 	//FILE SUBMENU
 	Gtk::MenuItem* item_file = Gtk::manage(new Gtk::MenuItem("_File",true));
 	menubar->append(*item_file);
@@ -62,8 +61,6 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
 	item_list_orders->signal_activate().connect([this]{this->on_list_orders_click();});
 	orders_menu->append(*item_list_orders);	
 
-
-
 	//HELP SUBMENU
 	Gtk::MenuItem* item_help = Gtk::manage(new Gtk::MenuItem("_Help",true));
 	menubar->append(*item_help);
@@ -73,14 +70,6 @@ Mainwin::Mainwin(Store& store) : _store{&store} {
 	Gtk::MenuItem* item_about = Gtk::manage(new Gtk::MenuItem("_About", true));
 	item_about->signal_activate().connect([this]{this->on_about_click();});
 	help_menu->append(*item_about);	
-
-	
-
-
-
-	
-	
-
 
     // /////////////
     // T O O L B A R
@@ -178,7 +167,7 @@ Mainwin::~Mainwin() { }
 	price.run();
 }
 */
-
+//ADDING SWEET
 void Mainwin::on_add_sweet_click() {
     std::string name = "";
     double price = -1;
@@ -264,6 +253,7 @@ void Mainwin::on_add_sweet_click() {
 	    reset_sensitivity();
 	#endif
 }
+//LISTING SWEETS
 	void Mainwin::on_list_sweets_click(){
 	//	Gtk::MessageDialog dialog(*this,"listing sweets");
 	//	dialog.run();
@@ -284,19 +274,7 @@ void Mainwin::on_add_sweet_click() {
 	    msg->set_text("");
 	#endif
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
+//PLACING ORDERS
 	void Mainwin::on_place_order_click(){
 	//	Gtk::MessageDialog dialog(*this,"place order");
 	//	dialog.run();
@@ -427,8 +405,37 @@ if(!(_store->num_sweets()<=item_number))
 
 	//LIST ORDERS
 	void Mainwin::on_list_orders_click(){
+	data->set_markup("<span size='large' weight='bold'>LISTING ORDERS code not yet finished (check mainwin.cpp)</span>");
 
-	}
+
+
+//PSEUDO CODE FOR LISTING ORDER
+
+
+
+//CHOOSE ORDER NUMBER saved into order_num;
+//IF order_num > _store->num_order()    return error message; ELSE continue to steps below
+
+/*
+	int order_num;
+	    if (_store->num_orders() == 0) {
+        data->set_markup("<span size='large' weight='bold'>No Orders have been defined yet</span>");
+	#ifdef __STATUSBAR
+ 	       msg->set_text("");
+	#endif
+ 	       return;
+	    }
+	    // The string manipulation way
+	    std::string s = "<span size='large' weight='bold'>";
+	     
+	        s +=    "\n Order #" + order_num + " ($" + _store.order(order).price() + ")\n" + _store.order(order) + "<\span>";
+	    data->set_markup(s);
+	#ifdef __STATUSBAR
+	    msg->set_text("");
+	#endif
+
+
+*/	}
 
 
 
