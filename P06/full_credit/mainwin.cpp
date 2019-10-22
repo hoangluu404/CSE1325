@@ -277,7 +277,7 @@ void Mainwin::on_add_sweet_click() {
 	    // The string manipulation way
 	    std::string s = "<span size='large' weight='bold'>";
 	    for(int i=0; i<_store->num_sweets(); ++i) 
-	        s += _store->sweet(i).name() + "  $" + std::to_string(_store->sweet(i).price()) + "\n";
+	        s += std::to_string(i)+".   "+_store->sweet(i).name() + ":   $" + std::to_string(_store->sweet(i).price()) + "\n";
 	    s += "</span>";
 	    data->set_markup(s);
 	#ifdef __STATUSBAR
@@ -285,15 +285,160 @@ void Mainwin::on_add_sweet_click() {
 	#endif
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
 	void Mainwin::on_place_order_click(){
-	Gtk::MessageDialog dialog(*this,"place order");
-	dialog.run();
+	//	Gtk::MessageDialog dialog(*this,"place order");
+	//	dialog.run();
+	bool exit=false;
+
+   Order *order = new Order();
+	#ifndef __SWEETSORDERDLG
+while(!exit){
+    int item_number =-2;
+    int quantity = -1;
+	    std::string prompt2 = "Items? (-1 to stop)";
+	    while (item_number < -1) {
+	        EntryDialog dialog{*this, prompt2};
+	        dialog.run();
+	        try {
+	            item_number = std::stoi(dialog.get_text());
+			if(_store->num_sweets()<=item_number){
+		        Gtk::MessageDialog dialog2{*this, "Invalid item"};
+		        dialog2.run();			
+
+			}
+	        } catch(std::exception e) {
+ 	           prompt2 = "Invalid item, item?";
+	            item_number = -1;
+	        }
+	    }
+	    if(item_number <= -1) {
+	#ifdef __STATUSBAR
+	        msg->set_text("New order cancelled");
+	#endif
+	        return;
+	    }
+	if(!(_store->num_sweets()<=item_number))
+	if(item_number!=-1 &&exit!=true){
+	    std::string prompt = "Quantity?";
+	    while (quantity < 0) {
+	        EntryDialog dialog{*this, prompt};
+	        dialog.run();
+	        try {
+	            quantity = std::stoi(dialog.get_text());
+	        } catch(std::exception e) {
+ 	           prompt = "Invalid Quantity, Quantity?";
+	            quantity = -1;
+	        }
+	    }
 	}
 
-	void Mainwin::on_list_orders_click(){
-	Gtk::MessageDialog dialog(*this,"listing orders");
-	dialog.run();
+/*  	#else
+	    Gtk::Dialog *dialog = new Gtk::Dialog{"Added to order", *this};
+	    // ITEM NUMBER
+	    Gtk::HBox b_items;
+	    Gtk::Label l_item_number{"Item:"};
+	    l_item_number.set_width_chars(15);
+	    b_items.pack_start(l_item_number, Gtk::PACK_SHRINK);
+	    Gtk::Entry e_item_number;
+	    e_item_number.set_max_length(50);
+	    b_items.pack_start(e_item_number, Gtk::PACK_SHRINK);
+	    dialog->get_vbox()->pack_start(b_items, Gtk::PACK_SHRINK);
+	    // QUANTITY
+	    Gtk::HBox b_quantity;
+	    Gtk::Label l_quantity{"Quantity:"};
+	    l_quantity.set_width_chars(15);
+	    b_quantity.pack_start(l_quantity, Gtk::PACK_SHRINK);
+ 	    Gtk::Entry e_quantity;
+ 	    e_quantity.set_max_length(50);
+	    b_quantity.pack_start(e_quantity, Gtk::PACK_SHRINK);
+	    dialog->get_vbox()->pack_start(b_quantity, Gtk::PACK_SHRINK);
+	    // Show dialog
+	    dialog->add_button("Cancel", 0);
+	    dialog->add_button("Create", 1);
+	    dialog->show_all();
+	    int result; // of the dialog (1 = OK)
+	    bool fail = true;  // set to true if any data is invalid
+	    while (fail) {
+	        fail = false;  // optimist!
+	        result = dialog->run();
+	        if (result != 1) {
+	#ifdef __STATUSBAR
+	            msg->set_text("New order cancelled");
+	#endif
+	            delete dialog;
+	            return;}
+	       try {
+	            quantity = std::stoi(e_quantity.get_text());
+ 	       } catch(std::exception e) {
+ 	           e_quantity.set_text("### Invalid ###");
+ 	           fail = true;
+	        }
+	        name = e_item_number.get_text();
+  	        if (item_number.size() == 0) {
+ 	           e_item_number.set_text("### Invalid ###");
+ 	           fail = true;
+	        }
+	    }
+	    delete dialog;
+*/	#endif
+//	if(exit!=true)
+//	 order.add(quantity,_store->sweet(item_number));
+
+
+
+
+if(!(_store->num_sweets()<=item_number))
+	order->add(quantity, _store->sweet(item_number));
+}	
+	_store->add(*order);
+	free(order);
+	    on_list_orders_click();
+	#ifdef __SENSITIVITY1
+	    reset_sensitivity();
+	#endif
+
+
+
+
+
+
 	}
+
+
+
+
+
+
+
+
+
+
+	//LIST ORDERS
+	void Mainwin::on_list_orders_click(){
+
+	}
+
+
+
+
+
+
+
+
+
+
 
 	void Mainwin::on_about_click(){
 	Glib::ustring st = R"(<span size='24000' weight='bold'>Sweetness</span>
@@ -305,8 +450,6 @@ void Mainwin::on_add_sweet_click() {
 	}
 
 	void Mainwin::on_quit_click(){	
-	Gtk::MessageDialog dialog(*this,"EXIT");
-	dialog.run();
 	std::exit(0);	}
 
 
