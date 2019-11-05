@@ -1,8 +1,8 @@
 CXXFLAGS += --std=c++17
 GTKFLAGS = `/usr/bin/pkg-config gtkmm-3.0 --cflags --libs`
 
-shelter: mainwin.o main-gui.o shelter.o client.o animal.o cat.o entrydialog.o  *.h
-	$(CXX) $(CXXFLAGS) mainwin.o main-gui.o shelter.o client.o animal.o cat.o entrydialog.o $(GTKFLAGS) -o shelter
+shelter: mainwin.o main-gui.o shelter.o client.o animal.o cat.o dog.o entrydialog.o  *.h
+	$(CXX) $(CXXFLAGS) mainwin.o main-gui.o shelter.o client.o animal.o cat.o dog.o entrydialog.o $(GTKFLAGS) -o shelter
 main-gui.o: main-gui.cpp *.h
 	$(CXX) $(CXXFLAGS) -c main-gui.cpp $(GTKFLAGS) -o main-gui.o
 mainwin.o: mainwin.cpp *.h
@@ -15,6 +15,8 @@ animal.o: animal.cpp *.h
 	$(CXX) $(CXXFLAGS) -c animal.cpp -o animal.o
 cat.o: cat.cpp *.h
 	$(CXX) $(CXXFLAGS) -c cat.cpp -o cat.o
+dog.o: dog.cpp *.h
+	$(CXX) $(CXXFLAGS) -c dog.cpp -o dog.o
 entrydialog.o: entrydialog.cpp *.h
 	$(CXX) $(CXXFLAGS) -c entrydialog.cpp $(GTKFLAGS) -o entrydialog.o
 
