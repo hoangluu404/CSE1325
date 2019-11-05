@@ -21,5 +21,5 @@ entrydialog.o: entrydialog.cpp *.h
 clean:
 	rm -f *.o *.gch a.out shelter
 add:
-	git add *.cpp *.h Makefile 
+	git add *.cpp *.h Makefile *.ods
 
