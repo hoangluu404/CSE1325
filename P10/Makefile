@@ -25,3 +25,6 @@ clean:
 	rm -f *.o *.gch shelter
 add:
 	git add *.cpp *.h Makefile *.ods
+run:
+	make
+	./shelter
