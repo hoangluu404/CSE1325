@@ -31,3 +31,15 @@ void Shelter::adopt(Client& client, Animal& animal){
 	client.adopt(animal);
 
 }
+
+std::string Shelter::client_name(Client& client){
+    return client.name();
+}
+
+std::string Shelter::animal_name(Animal& animal){
+    return animal.name();
+}
+
+void Shelter::delete_animal(int index){
+	_available.erase(_available.begin()+index);
+}

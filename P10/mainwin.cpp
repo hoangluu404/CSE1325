@@ -72,8 +72,20 @@ Mainwin::Mainwin() : shelter{new Shelter{"Mavs Animal Shelter"}} {
     //           LIST
     // List Clients to main display
     Gtk::MenuItem *menuitem_listclients = Gtk::manage(new Gtk::MenuItem("_List", true));
-    menuitem_listclients->signal_activate().connect([this] {this->on_new_client_click();});
+    menuitem_listclients->signal_activate().connect([this] {this->on_list_clients_click();});
     clientmenu->append(*menuitem_listclients);
+
+    //           ADOPT
+    // Append New to the Client menu
+    Gtk::MenuItem *menuitem_adopt = Gtk::manage(new Gtk::MenuItem("_Adopt", true));
+    menuitem_adopt->signal_activate().connect([this] {this->on_adopt_animal_click();});
+    clientmenu->append(*menuitem_adopt);
+
+    //           LIST ADOPT
+    // List Clients to main display
+    Gtk::MenuItem *menuitem_listadopted = Gtk::manage(new Gtk::MenuItem("_List Adopted", true));
+    menuitem_listadopted->signal_activate().connect([this] {this->on_list_adopted_click();});
+    clientmenu->append(*menuitem_listadopted);
 
     // /////////////
     // T O O L B A R
@@ -256,11 +268,20 @@ void Mainwin::on_new_animal_click() {
 }
 
 void Mainwin::on_list_animals_click() {
+if(shelter->num_animals()){
     std::ostringstream oss;
     for(int i=0; i<shelter->num_animals(); ++i)
         oss << shelter->animal(i) << '\n'; 
     data->set_text(oss.str());
     status("");
+}
+else{
+std::ostringstream oss;
+    
+    oss <<"NO ANIMALS FOUND";
+    data->set_text(oss.str());
+    status("");
+}
 }      // List all animals
 void Mainwin::on_new_client_click() {
     Gtk::Dialog dialog{"Client Information", *this};
@@ -298,6 +319,151 @@ void Mainwin::on_new_client_click() {
         break;
     }
 }
+void Mainwin::on_list_clients_click(){
+if(shelter->num_clients()>0){
+std::ostringstream oss;
+    for(int i=0; i<shelter->num_clients(); ++i)
+        oss << shelter->client(i) << '\n'; 
+    data->set_text(oss.str());
+    status("");
+}else{
+std::ostringstream oss;
+    
+    oss <<"NO CLIENTS FOUND";
+    data->set_text(oss.str());
+    status("");
+}
+
+}
+
+void Mainwin::on_adopt_animal_click(){
+      Gtk::Dialog dialog{"Cadt Information", *this};
+
+    Gtk::Grid grid;
+
+if(shelter->num_clients()>0 && shelter->num_animals()>0){
+
+    Gtk::Label l_clients{"Select Client"};
+    Gtk::ComboBoxText c_clients;
+	for(int i=0;i<shelter->num_clients();i++){
+		c_clients.append(shelter->client_name(shelter->client(i)));
+	}
+    c_clients.set_active(0);
+    grid.attach(l_clients, 0, 3, 1, 1);
+    grid.attach(c_clients, 1, 3, 2, 1);
+
+    Gtk::Label l_animals{"Select Animal"};
+    Gtk::ComboBoxText c_animals;
+	for(int i=0;i<shelter->num_animals();i++){
+		c_animals.append(shelter->animal_name(shelter->animal(i)));
+	}
+    c_animals.set_active(0);
+    grid.attach(l_animals, 0, 4, 1, 1);
+    grid.attach(c_animals, 1, 4, 2, 1);
+
+    dialog.get_content_area()->add(grid);
+
+    dialog.add_button("Adopt Animal", 1);
+    dialog.add_button("Cancel", 0);
+    dialog.show_all();
+
+    
+
+    if(dialog.run()) {
+	std::ostringstream oss;
+        oss <<"ANIMAL ADOPTED";
+    	data->set_text(oss.str());
+  	status("");
+
+	shelter->adopt(shelter->client(c_clients.get_active_row_number()),  shelter->animal(c_animals.get_active_row_number()));
+	shelter->delete_animal(c_animals.get_active_row_number());
+    }else{
+	std::ostringstream oss;
+        oss <<"ADOPTION CANCELLED";
+    	data->set_text(oss.str());
+  	status("");
+	}
+	
+
+}else if(shelter->num_animals()<=0 && shelter->num_clients()<=0){
+std::ostringstream oss;
+    
+    oss <<"NO CLIENTS AND ANIMALS FOUND";
+    data->set_text(oss.str());
+    status("");
+}
+else if(shelter->num_clients()<=0){
+std::ostringstream oss;
+    
+    oss <<"NO CLIENTS FOUND";
+    data->set_text(oss.str());
+    status("");
+}
+else if(shelter->num_animals()<=0){
+std::ostringstream oss;
+    
+    oss <<"NO ANIMALS FOUND";
+    data->set_text(oss.str());
+    status("");
+}
+
+}
+
+void Mainwin::on_list_adopted_click(){
+     Gtk::Dialog dialog{"Cadt Information", *this};
+
+    Gtk::Grid grid;
+
+if(shelter->num_clients()>0){
+
+    Gtk::Label l_clients{"Select Client"};
+    Gtk::ComboBoxText c_clients;
+	for(int i=0;i<shelter->num_clients();i++){
+		c_clients.append(shelter->client_name(shelter->client(i)));
+	}
+    c_clients.set_active(0);
+    grid.attach(l_clients, 0, 3, 1, 1);
+    grid.attach(c_clients, 1, 3, 2, 1);
+    dialog.get_content_area()->add(grid);
+
+    dialog.add_button("Show Adopted Animals", 1);
+    dialog.add_button("Cancel", 0);
+    dialog.show_all();
+
+    
+
+    if(dialog.run()) {
+	std::ostringstream oss;
+        oss <<"CLIENT: " <<    shelter->client_name(shelter->client(c_clients.get_active_row_number())) <<"\n";
+	for(int i=0   ; i   <   shelter->client(c_clients.get_active_row_number()).num_adopted()    ;i++){
+		oss<< (i+1) << ". " << shelter->client(c_clients.get_active_row_number()).animal(i) <<"\n" ;
+	}
+    	data->set_text(oss.str());
+  	status("");
+
+
+	if(shelter->client(c_clients.get_active_row_number()).num_adopted()<=0){
+	  std::ostringstream oss;
+    
+  	  oss <<"THIS CLIENT HAVE NOT ADOPTED ANY ANIMALS";
+ 	  data->set_text(oss.str());
+  	  status("");
+	}
+    }
+	
+
+}
+else if(shelter->num_clients()<=0){
+std::ostringstream oss;
+    
+    oss <<"NO CLIENTS FOUND";
+    data->set_text(oss.str());
+    status("");
+}
+
+
+}
+
 
 // /////////////////
 // U T I L I T I E S

@@ -18,6 +18,11 @@ class Shelter {
     int num_clients();
     Client& client(int index);
 
+
+    std::string client_name(Client& client);
+    std::string animal_name(Animal& animal);
+    void delete_animal(int index);
+
     void adopt(Client& client, Animal& animal);
 
   private:

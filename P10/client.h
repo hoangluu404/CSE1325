@@ -12,6 +12,7 @@ class Client {
     void adopt(Animal& animal);
     int num_adopted();
     const Animal& animal(int index);
+	std::string name();
   private:
     std::string _name;
     std::string _phone;

@@ -23,3 +23,7 @@ int Client::num_adopted(){
 const Animal& Client::animal(int index){
   return *this->adopted[index];
 }
+
+std::string Client::name(){
+	return _name;
+}
