@@ -69,6 +69,12 @@ Mainwin::Mainwin() : shelter{new Shelter{"Mavs Animal Shelter"}} {
     menuitem_newclient->signal_activate().connect([this] {this->on_new_client_click();});
     clientmenu->append(*menuitem_newclient);
 
+    //           LIST
+    // List Clients to main display
+    Gtk::MenuItem *menuitem_listclients = Gtk::manage(new Gtk::MenuItem("_List", true));
+    menuitem_listclients->signal_activate().connect([this] {this->on_new_client_click();});
+    clientmenu->append(*menuitem_listclients);
+
     // /////////////
     // T O O L B A R
     // Add a toolbar to the vertical box below the menu

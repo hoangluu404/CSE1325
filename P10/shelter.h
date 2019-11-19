@@ -18,6 +18,8 @@ class Shelter {
     int num_clients();
     Client& client(int index);
 
+    void adopt(Client& client, Animal& animal);
+
   private:
     std::string _name;
     std::vector<Animal*> _available;
