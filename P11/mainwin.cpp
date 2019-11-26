@@ -493,9 +493,6 @@ std::ostringstream oss;
 }
 }
 
-
-
-
 	void Mainwin::on_new_shelter_click(){
 		free(shelter);
 		shelter = new Shelter("SHELTER");
@@ -520,7 +517,7 @@ std::ostringstream oss;
 		free(shelter);
 		shelter={new Shelter{shelter->load()}};
 		std::ostringstream oss;
-  	 	oss <<"NEW SHELTER CREATED";
+  	 	oss <<"LOADED SHELTER";
  	  	data->set_text(oss.str());
   	 	status("");
   	 	status("default.mass");
