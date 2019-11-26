@@ -5,7 +5,14 @@
 #include "cat.h"
 #include "rabbit.h"
 Shelter::Shelter(std::string name) : _name{name} { }
+Shelter::Shelter(Shelter& shelter): _clients{shelter._clients} , _available{shelter._available}  		{}
+
+
 std::string Shelter::name() {return _name;}
+
+
+
+
 
 void Shelter::add_animal(Animal& animal) {
     _available.push_back(&animal);
@@ -40,6 +47,8 @@ std::string Shelter::client_name(Client& client){
     return client.name();
 }
 
+
+
 std::string Shelter::animal_name(Animal& animal){
     return animal.name();
 }
@@ -48,7 +57,7 @@ void Shelter::delete_animal(int index){
 	_available.erase(_available.begin()+index);
 }
 
-Shelter::Shelter(std::istream& ist){}
+//Shelter::Shelter(std::istream& ist){}
 
 
 void Shelter::save() {
@@ -61,7 +70,7 @@ void Shelter::save() {
 			ofs << "available;" ;
 			ofs << animal(i).family() <<";";
 			ofs << animal(i).name() <<";";
-			ofs << animal(i).breed() <<";";
+			ofs << animal(i).int_breed() <<";";
 			ofs << animal(i).gender() <<";";
 			ofs << animal(i).age() <<"\n";
 		}
@@ -82,12 +91,16 @@ void Shelter::save() {
 				if(client(i).num_adopted()>0)	ofs << i << ";";
 				ofs << client(i).animal(j).family() <<";";
 				ofs << client(i).animal(j).name() <<";";
-				ofs << client(i).animal(j).breed() <<";";
+				ofs << client(i).animal(j).int_breed() <<";";
 				ofs << client(i).animal(j).gender() <<";";
 				ofs << client(i).animal(j).age() <<"\n";
 
 			}
 		}
+
+
+
+
 
 	} else{
 		return;	
@@ -105,7 +118,7 @@ Shelter& Shelter::load(){
 
 
 	//GET LINE
-	while(std::getline(ifs, line, '\n')){
+	while(std::getline(ifs, line, '\n') && !ifs.eof()){
 		std::stringstream check(line);
 		std::cout<<"LINE: "<<line<<std::endl;
 		//BREAK LINE INTO PHRASE
@@ -114,19 +127,27 @@ Shelter& Shelter::load(){
 
 		if(tokens[0]=="available"){	//AVAILABLE ANIMALS
 			if(tokens[1]=="Dog"){
-				Animal* animal = new Dog{dog_breeds[0], 
+				Animal* animal = new Dog{dog_breeds[static_cast<int>(stoi(tokens[3]))], 
                                  	tokens[2],
-                                 	(0 ? Gender::MALE : Gender::FEMALE),
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
                                  	static_cast<int>(stoi(tokens[5]))};
 				shelter->add_animal(*animal);
 
 
 			}else if(tokens[1]=="Cat"){
-
+				Animal* animal = new Cat{cat_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
 
 
 			}else if(tokens[1]=="Rabbit"){
-
+				Animal* animal = new Rabbit{rabbit_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
 
 
 			}
@@ -148,8 +169,8 @@ Shelter& Shelter::load(){
 	}
 
 
-
-	return *this;
+std::cout<<"END FILE"<<std::endl;
+	return *shelter;
 }
 
 

@@ -31,7 +31,7 @@ class Shelter {
     void adopt(Client& client, Animal& animal);
 
 
-    Shelter(std::istream& ist);
+    Shelter(Shelter& shelter);
     void save();		//save
     Shelter& load();		//load
 

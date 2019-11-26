@@ -31,3 +31,28 @@ std::ostream& operator<<(std::ostream& ost, const Cat_breed& breed) {
     ost << ::to_string(breed);
     return ost;
 }
+
+int to_int(const Cat_breed& breed) {
+    switch(breed) {
+        case  Cat_breed::PERSIAN:        return 1;
+        case  Cat_breed::RUSSIANBLUE:   return 2;
+        case  Cat_breed::BENGAL:  return 3; 
+        case  Cat_breed::BRITISHSHORTHAIR:   return 4; 
+        case  Cat_breed::SIAMESE:    return 5; 
+        case  Cat_breed::MAINECOON:     return 6; 
+        case  Cat_breed::SPHYNX:     return 7; 
+        case  Cat_breed::RAGDOLL: return 8; 
+        case  Cat_breed::MUNCHKIN:    return 9; 
+        case  Cat_breed::SCOTTISHFOLD:    return 10; 
+        case  Cat_breed::BIRMAN:      return 11; 
+        case  Cat_breed::ABYSSINIAN:  return 12; 
+        default:                     return 0;
+	}
+}
+
+
+int Cat::int_breed() const { return to_int(_breed); };
+
+
+
+

@@ -20,6 +20,12 @@ class Animal {
 
     virtual std::string to_string() const;
     friend std::ostream& operator<<(std::ostream& ost, const Animal& animal);
+
+    virtual int int_breed() const = 0;
+    int int_gender(Gender gender);
+
+
+
   protected:
     std::string _name;
     Gender _gender;

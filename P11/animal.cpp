@@ -27,4 +27,4 @@ std::ostream& operator<<(std::ostream& ost, const Gender& gender) {
     ost << to_string(gender);
     return ost;
 }
-
+int Animal::int_gender(Gender gender){ return ((gender == Gender::FEMALE) ? 0 : 1); };

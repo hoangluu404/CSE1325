@@ -6,8 +6,8 @@ std::vector<Animal*> adopted;
  }
 
 std::ostream& operator<<(std::ostream& ost, const Client& client) {
-    ost << client._name  << "; "
-        << client._phone << "; "
+    ost << client._name  << ";"
+        << client._phone << ";"
         << client._email;
     return ost;
 }

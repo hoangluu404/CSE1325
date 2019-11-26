@@ -476,8 +476,8 @@ if(shelter->num_clients()>0){
     	data->set_text(oss.str());
   	status("");
 	if(shelter->client(c_clients.get_active_row_number()).num_adopted()<=0){
+
 	  std::ostringstream oss;
-    
   	  oss <<"THIS CLIENT HAS NOT ADOPTED ANY ANIMALS";
  	  data->set_text(oss.str());
   	  status("");
@@ -493,17 +493,37 @@ std::ostringstream oss;
 }
 }
 
-	void Mainwin::on_new_shelter_click(){}
+
+
+
+	void Mainwin::on_new_shelter_click(){
+		free(shelter);
+		shelter = new Shelter("SHELTER");
+		std::ostringstream oss;
+  	 	oss <<"NEW SHELTER CREATED";
+ 	  	data->set_text(oss.str());
+  	 	status("");
+
+	}
 	void Mainwin::on_save_click(){
-		shelter->save();		
+		shelter->save();
+		std::ostringstream oss;
+  	 	oss <<"SHELTER SAVED";
+ 	  	data->set_text(oss.str());
+  	 	status("");
+  	  	status("default.mass");		
 
 	}
 	void Mainwin::on_save_as_click(){}
 
 	void Mainwin::on_load_click(){
 		free(shelter);
-		shelter->load();
-
+		shelter={new Shelter{shelter->load()}};
+		std::ostringstream oss;
+  	 	oss <<"NEW SHELTER CREATED";
+ 	  	data->set_text(oss.str());
+  	 	status("");
+  	 	status("default.mass");
 	}
 
 	void Mainwin::on_open_click(){}

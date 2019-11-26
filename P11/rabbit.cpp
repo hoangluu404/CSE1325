@@ -31,3 +31,27 @@ std::ostream& operator<<(std::ostream& ost, const Rabbit_breed& breed) {
     ost << ::to_string(breed);
     return ost;
 }
+
+int to_int(const Rabbit_breed& breed) {
+    switch(breed) {
+        case  Rabbit_breed::AMERICAN:        return 1;
+        case  Rabbit_breed::BELGIANHARE:   return 2;
+        case  Rabbit_breed::BLANCDEHOTOT:  return 3; 
+        case  Rabbit_breed::CALIFORNIAN:   return 4; 
+        case  Rabbit_breed::CHECKEREDGIANT:    return 5; 
+        case  Rabbit_breed::DUTCH:     return 6; 
+        case  Rabbit_breed::ENGLISHLOP:     return 7; 
+        case  Rabbit_breed::ENGLISHSPOT: return 8; 
+        case  Rabbit_breed::FLEMISHGIANT:    return 9; 
+        case  Rabbit_breed::FRENCHANGORA:    return 10; 
+        case  Rabbit_breed::ANGORA:      return 11; 
+        case  Rabbit_breed::HARLEQUIN:  return 12; 
+        default:                     return 0;
+    }
+}
+
+
+int Rabbit::int_breed() const { return to_int(_breed); };
+
+
+
