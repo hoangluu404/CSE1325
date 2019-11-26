@@ -6,19 +6,22 @@
 #include <vector>
 #include <ostream>
 #include <istream>
-
+#include <fstream>
 class Shelter {
   public:
     Shelter(std::string name);
+    Animal& animal(int index); 
+    Client& client(int index);
+
     std::string name();
 
     void add_animal(Animal& animal);
     int num_animals();
-    Animal& animal(int index); 
+
 
     void add_client(Client& client);
     int num_clients();
-    Client& client(int index);
+
 
 
     std::string client_name(Client& client);
@@ -29,7 +32,8 @@ class Shelter {
 
 
     Shelter(std::istream& ist);
-    void save(std::ostream& ost);
+    void save();		//save
+    Shelter& load();		//load
 
   private:
     std::string _name;

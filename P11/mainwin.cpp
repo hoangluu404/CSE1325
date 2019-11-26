@@ -494,11 +494,22 @@ std::ostringstream oss;
 }
 
 	void Mainwin::on_new_shelter_click(){}
-	void Mainwin::on_save_click(){}
+	void Mainwin::on_save_click(){
+		shelter->save();		
+
+	}
 	void Mainwin::on_save_as_click(){}
-	void Mainwin::on_load_click(){}
+
+	void Mainwin::on_load_click(){
+		free(shelter);
+		shelter->load();
+
+	}
+
 	void Mainwin::on_open_click(){}
+
 	void Mainwin::on_about_click(){}
+
 // /////////////////
 // U T I L I T I E S
 // /////////////////

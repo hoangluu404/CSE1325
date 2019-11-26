@@ -1,5 +1,9 @@
 #include "shelter.h"
-
+#include <bits/stdc++.h> 
+#include <string>
+#include "dog.h"
+#include "cat.h"
+#include "rabbit.h"
 Shelter::Shelter(std::string name) : _name{name} { }
 std::string Shelter::name() {return _name;}
 
@@ -47,13 +51,112 @@ void Shelter::delete_animal(int index){
 Shelter::Shelter(std::istream& ist){}
 
 
-void Shelter::save(std::ostream& ost) {
-    ost << program_name << '\n' << program_version << '\n';
-    ost << _name << std::endl;
-    ost << _products.size() << std::endl;
-    for(Product* f : _products) {ost << f->type() << std::endl; f->save(ost);}
-    ost << _customers.size() << std::endl;
-    for(Customer* c : _customers) c->save(ost);
-    ost << _orders.size() << std::endl;
-    for(Order* o : _orders) o->save(ost);
+void Shelter::save() {
+	std::ofstream ofs("default.mass");
+	if(ofs.is_open()){
+
+
+		//AVAILABLE ANIMALS
+		for(int i=0; i<_available.size();i++){
+			ofs << "available;" ;
+			ofs << animal(i).family() <<";";
+			ofs << animal(i).name() <<";";
+			ofs << animal(i).breed() <<";";
+			ofs << animal(i).gender() <<";";
+			ofs << animal(i).age() <<"\n";
+		}
+		
+		//LIST ALL CLIENTS
+		for(int i=0; i< num_clients();i++){
+			ofs << "client;";
+			ofs << client(i)<<"\n";
+		}
+
+
+		//ADOPTED ANIMAL BY CLIENT NUMBER
+		for(int i=0; i< num_clients();i++){
+			//client ID
+
+
+			for(int j=0; j< client(i).num_adopted(); j++  ){
+				if(client(i).num_adopted()>0)	ofs << i << ";";
+				ofs << client(i).animal(j).family() <<";";
+				ofs << client(i).animal(j).name() <<";";
+				ofs << client(i).animal(j).breed() <<";";
+				ofs << client(i).animal(j).gender() <<";";
+				ofs << client(i).animal(j).age() <<"\n";
+
+			}
+		}
+
+	} else{
+		return;	
+	}
+	ofs<<"end";
+	ofs.close();
 }
+
+Shelter& Shelter::load(){
+
+	std::ifstream ifs("default.mass");		//load default.mass
+	Shelter* shelter = new Shelter("Just a Name");	//create a new shelter
+	std::string line,temp;
+	std::vector<std::string> tokens;
+
+
+	//GET LINE
+	while(std::getline(ifs, line, '\n')){
+		std::stringstream check(line);
+		std::cout<<"LINE: "<<line<<std::endl;
+		//BREAK LINE INTO PHRASE
+		while(std::getline(check, temp, ';'))
+			tokens.push_back(temp);		
+
+		if(tokens[0]=="available"){	//AVAILABLE ANIMALS
+			if(tokens[1]=="Dog"){
+				Animal* animal = new Dog{dog_breeds[0], 
+                                 	tokens[2],
+                                 	(0 ? Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
+
+
+			}else if(tokens[1]=="Cat"){
+
+
+
+			}else if(tokens[1]=="Rabbit"){
+
+
+
+			}
+
+
+		
+		}else if(tokens[0]=="client"){	//CLIENTS INFO
+
+
+		}else{				//ADOPTED ANIMALS
+
+
+		}
+	std::cout<<"___________________________"<<std::endl;
+	for(int i=0; i<tokens.size(); i++)
+		std::cout<<tokens[i]<<std::endl;
+	while (!tokens.empty())
+		tokens.pop_back();
+	}
+
+
+
+	return *this;
+}
+
+
+
+
+
+
+
+
+

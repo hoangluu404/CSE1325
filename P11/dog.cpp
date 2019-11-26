@@ -13,7 +13,7 @@ std::string Dog::breed() const {return ::to_string(_breed);}
 std::string to_string(const Dog_breed& breed) {
     switch(breed) {
         case  Dog_breed::MIX:        return "Mix";
-        case  Dog_breed::LABRADOR:   return "Labrador";
+        case  Dog_breed::LABRADOR:   return "LabradorAAAAAAAQ";
         case  Dog_breed::RETRIEVER:  return "Retriever"; 
         case  Dog_breed::SHEPHERD:   return "Shepherd"; 
         case  Dog_breed::BULLDOG:    return "Bulldog"; 
@@ -31,3 +31,5 @@ std::ostream& operator<<(std::ostream& ost, const Dog_breed& breed) {
     ost << ::to_string(breed);
     return ost;
 }
+
+
