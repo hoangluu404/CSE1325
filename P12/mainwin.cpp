@@ -480,8 +480,9 @@ void Mainwin::on_list_adopted_click(){
 
 //CREATE NEW SHELTER
 void Mainwin::on_new_shelter_click(){
-	free(shelter);
-	shelter = new Shelter("SHELTER");
+	if(shelter!=NULL)
+		delete shelter;
+	shelter={new Shelter("Maverick Animal Shelter")};
 	std::ostringstream oss;
  	oss <<"NEW SHELTER";
   	data->set_text(oss.str());
@@ -527,7 +528,8 @@ void Mainwin::on_open_click(){
 	
 	switch(result){
     		case(Gtk::RESPONSE_OK):{
-			free(shelter);
+			if(shelter!=NULL)
+				delete shelter;
 			shelter={new Shelter{shelter->load(dialog.get_filename())}};
      	 		std::ostringstream oss;
   	 		oss <<"";
@@ -547,7 +549,8 @@ void Mainwin::on_open_click(){
 
 //LOAD DEFAULT.MASS
 void Mainwin::on_load_click(){
-	free(shelter);
+	//if(shelter!=NULL)
+		delete shelter;
 	shelter={new Shelter{shelter->load()}};
 	std::ostringstream oss;
   	oss <<"SHELTER LOADED";
