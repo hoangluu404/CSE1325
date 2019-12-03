@@ -7,6 +7,7 @@
 #include <ostream>
 #include <istream>
 #include <fstream>
+#include <string>
 class Shelter {
   public:
     Shelter(std::string name);
@@ -33,7 +34,9 @@ class Shelter {
 
     Shelter(Shelter& shelter);
     void save();		//save
+    void save(std::string filename);		//save as
     Shelter& load();		//load
+    Shelter& load(std::string filename); // open
 
   private:
     std::string _name;

@@ -77,10 +77,65 @@ void Shelter::save() {
 			}
 		}
 	} else{
+		
+		return;	
+	}
+
+	ofs.close();
+}
+
+
+
+
+
+//SAVE AS
+void Shelter::save(std::string filename) {
+	std::ofstream ofs(filename);
+	if(ofs.is_open()){
+
+		//AVAILABLE ANIMALS
+		for(int i=0; i<_available.size();i++){
+			ofs << "available;" ;
+			ofs << animal(i).family() <<";";
+			ofs << animal(i).name() <<";";
+			ofs << animal(i).int_breed() <<";";
+			ofs << animal(i).gender() <<";";
+			ofs << animal(i).age() <<"\n";
+		}
+		
+		//LIST ALL CLIENTS
+		for(int i=0; i< num_clients();i++){
+			ofs << "client;";
+			ofs << client(i)<<"\n";
+		}
+
+		//ADOPTED ANIMAL BY CLIENT NUMBER
+		for(int i=0; i< num_clients();i++){
+			//client ID
+
+			//saving adopted animals by owner
+			for(int j=0; j< client(i).num_adopted(); j++  ){
+				if(client(i).num_adopted()>0)	ofs << i << ";";
+				ofs << client(i).animal(j).family() <<";";
+				ofs << client(i).animal(j).name() <<";";
+				ofs << client(i).animal(j).int_breed() <<";";
+				ofs << client(i).animal(j).gender() <<";";
+				ofs << client(i).animal(j).age() <<"\n";
+			}
+		}
+	} else{
+
 		return;	
 	}
 	ofs.close();
 }
+
+
+
+
+
+
+
 
 //LOAD FUNCTION
 Shelter& Shelter::load(){
@@ -129,7 +184,7 @@ Shelter& Shelter::load(){
 				Client* client = new Client(tokens[1],tokens[2],tokens[3]);
 				shelter->add_client(*client);
 
-		}else{				//ADOPTED ANIMALS
+		}else{					//ADOPTED ANIMALS
 			//create dog
 			if(tokens[1]=="Dog"){
 				Animal* animal = new Dog{dog_breeds[static_cast<int>(stoi(tokens[3]))], 
@@ -167,7 +222,90 @@ Shelter& Shelter::load(){
 }
 
 
+//OPEN FILE FUNCTION
+Shelter& Shelter::load(std::string filename){
 
+	std::ifstream ifs(filename);		//load default.mass
+	Shelter* shelter = new Shelter("SHELTER");	//create a new shelter
+	std::string line,temp;
+	std::vector<std::string> tokens;
+
+	//GET LINE
+	while(std::getline(ifs, line, '\n') && !ifs.eof()){
+		std::stringstream check(line);
+		std::cout<<"LINE: "<<line<<std::endl;
+
+		//BREAK LINE INTO PHRASE // tokens
+		while(std::getline(check, temp, ';'))
+			tokens.push_back(temp);		
+
+		if(tokens[0]=="available"){	//AVAILABLE ANIMALS
+			//create dog
+			if(tokens[1]=="Dog"){
+				Animal* animal = new Dog{dog_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
+
+			//create cat
+			}else if(tokens[1]=="Cat"){
+				Animal* animal = new Cat{cat_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
+
+			//create rabbit
+			}else if(tokens[1]=="Rabbit"){
+				Animal* animal = new Rabbit{rabbit_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
+
+			}
+		}else if(tokens[0]=="client"){	//CLIENTS INFO
+				Client* client = new Client(tokens[1],tokens[2],tokens[3]);
+				shelter->add_client(*client);
+
+		
+		}else{				//ADOPTED ANIMALS
+			//create dog
+			if(tokens[1]=="Dog"){
+				Animal* animal = new Dog{dog_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
+
+			//create cat
+			}else if(tokens[1]=="Cat"){
+				Animal* animal = new Cat{cat_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
+			//create rabbit
+			}else if(tokens[1]=="Rabbit"){
+				Animal* animal = new Rabbit{rabbit_breeds[static_cast<int>(stoi(tokens[3]))], 
+                                 	tokens[2],
+                                 	( ( tokens[4] == "Male" ? Gender::MALE : Gender::FEMALE) == Gender::MALE ? 							Gender::MALE : Gender::FEMALE),
+                                 	static_cast<int>(stoi(tokens[5]))};
+				shelter->add_animal(*animal);
+			}
+			//adopt animal and delete from available list
+			shelter->adopt(shelter->client(  static_cast<int>(stoi(tokens[0]))  ), 
+									shelter->animal(_available.size()-1)  );
+			shelter->delete_animal(_available.size()-1);
+		}
+	//empty tokens
+	while (!tokens.empty())
+		tokens.pop_back();
+	}
+
+	return *shelter;
+}
 
 
 

@@ -22,7 +22,7 @@ rabbit.o: rabbit.cpp *.h
 client.o: client.cpp *.h
 	$(CXX) $(CXXFLAGS) -c client.cpp -o client.o
 clean:
-	rm -f *.o *.gch shelter
+	rm -f *.o *.gch shelter *.mass
 add:
 	git add *.cpp *.h Makefile *.ods
 run:

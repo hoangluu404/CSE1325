@@ -4,6 +4,7 @@
 #include "rabbit.h"
 #include "client.h"
 #include <sstream>
+#include<iostream>
 
 Mainwin::Mainwin() : shelter{new Shelter{"Mavs Animal Shelter"}} {
 
@@ -511,7 +512,59 @@ std::ostringstream oss;
   	  	status("default.mass");		
 
 	}
-	void Mainwin::on_save_as_click(){}
+void Mainwin::on_open_click(){
+	Gtk::FileChooserDialog dialog("Please choose a file",
+        Gtk::FILE_CHOOSER_ACTION_OPEN);
+  	dialog.set_transient_for(*this);
+
+
+  	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+  	dialog.add_button("_Open", Gtk::RESPONSE_OK);
+
+	//FILTER
+  	auto filter_any = Gtk::FileFilter::create();
+  	filter_any->set_name("Any files");
+  	filter_any->add_pattern("*");
+  	dialog.add_filter(filter_any);
+
+  	auto filter_text = Gtk::FileFilter::create();
+  	filter_text->set_name("Mass files");
+  	filter_text->add_pattern("*.mass");
+  	dialog.add_filter(filter_text);
+
+  	auto filter_cpp = Gtk::FileFilter::create();
+  	filter_cpp->set_name("C++ files");
+  	filter_cpp->add_pattern("*.cpp");
+  	filter_cpp->add_pattern("*.h");
+  	dialog.add_filter(filter_cpp);
+
+
+
+  	//Show the dialog and wait for a user response:
+  	int result = dialog.run();
+	
+  	//Handle the response:
+	switch(result){
+    		case(Gtk::RESPONSE_OK):{
+			free(shelter);
+			shelter={new Shelter{shelter->load(dialog.get_filename())}};
+     	 		break;
+   	 	}
+   	 	case(Gtk::RESPONSE_CANCEL):{
+    	  		break;
+  		 }
+   	 	default:{
+   	   		break;
+  	 	}
+
+	}
+
+
+
+
+
+
+}
 
 	void Mainwin::on_load_click(){
 		free(shelter);
@@ -523,7 +576,65 @@ std::ostringstream oss;
   	 	status("default.mass");
 	}
 
-	void Mainwin::on_open_click(){}
+void Mainwin::on_save_as_click(){
+	Gtk::FileChooserDialog dialog("SAVE AS",
+        Gtk::FILE_CHOOSER_ACTION_SAVE);
+  	dialog.set_transient_for(*this);
+
+
+  	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
+  	dialog.add_button("_Save", Gtk::RESPONSE_OK);
+
+	//FILTER
+  	auto filter_any = Gtk::FileFilter::create();
+  	filter_any->set_name("Any files");
+  	filter_any->add_pattern("*");
+  	dialog.add_filter(filter_any);
+
+  	auto filter_text = Gtk::FileFilter::create();
+  	filter_text->set_name("Mass files");
+  	filter_text->add_pattern("*.mass");
+  	dialog.add_filter(filter_text);
+
+  	auto filter_cpp = Gtk::FileFilter::create();
+  	filter_cpp->set_name("C++ files");
+  	filter_cpp->add_pattern("*.cpp");
+  	filter_cpp->add_pattern("*.h");
+  	dialog.add_filter(filter_cpp);
+	dialog.set_current_name("shelter.mass");
+
+
+
+  	//Show the dialog and wait for a user response:
+  	int result = dialog.run();
+	
+  	//Handle the response:
+	switch(result){
+    		case(Gtk::RESPONSE_OK):{
+			std::string s =dialog.get_current_folder()+"/"+dialog.get_current_name();
+			shelter->save(s);
+     	 		break;
+   	 	}
+   	 	case(Gtk::RESPONSE_CANCEL):{
+    	  		break;
+  		 }
+   	 	default:{
+   	   		break;
+  	 	}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+}
 
 	void Mainwin::on_about_click(){}
 
