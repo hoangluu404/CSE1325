@@ -605,12 +605,13 @@ void Mainwin::on_save_as_click(){
 
 void Mainwin::on_about_click(){
 	Gtk::AboutDialog dialog;
+	dialog.set_program_name("Maverick Animal Shelter");
 	dialog.set_logo_default();
 	dialog.set_version("Version 2.0");
 	dialog.set_copyright("Created by Hoang Luu\n1000969998");
-	dialog.set_license("For presentation purpose only\nNOT FOR SALE");
 	dialog.set_website_label("our website");
-	dialog.set_website("www.google.com");
+	dialog.set_website("https://developer.gnome.org/gtkmm/stable/classGtk_1_1AboutDialog.html");
+	dialog.set_license_type(Gtk::License::LICENSE_BSD);
 	dialog.run();
 }
 
