@@ -280,7 +280,7 @@ void Mainwin::on_new_animal_click() {
                                  (c_gender.get_active_row_number() ? Gender::MALE : Gender::FEMALE),
                                  static_cast<int>(s_age.get_value())};shelter->add_animal(*animal);
 	std::ostringstream oss;
-        oss << "Added Dog" << *animal;
+        oss << "ADDED DOG" << *animal;
         status(oss.str());
 	}
       if(type.get_active_row_number()==1){
@@ -295,7 +295,7 @@ void Mainwin::on_new_animal_click() {
                                  (c_gender.get_active_row_number() ? Gender::MALE : Gender::FEMALE),
                                  static_cast<int>(s_age.get_value())};shelter->add_animal(*animal);
 	std::ostringstream oss;
-        oss << "Added Cat" << *animal;
+        oss << "ADDED CAT" << *animal;
         status(oss.str());
 	}
       if(type.get_active_row_number()==2){
@@ -310,7 +310,7 @@ void Mainwin::on_new_animal_click() {
                                  (c_gender.get_active_row_number() ? Gender::MALE : Gender::FEMALE),
                                  static_cast<int>(s_age.get_value())};shelter->add_animal(*animal);
         std::ostringstream oss;
-        oss << "Added Rabbit" << *animal;
+        oss << "ADDED RABBIT" << *animal;
         status(oss.str());
 	}
         break;
@@ -328,9 +328,9 @@ if(shelter->num_animals()){
 }
 else{
 std::ostringstream oss;    
-    oss <<"NO ANIMALS FOUND";
+    oss <<"NO AVAILABLE ANIMAL";
     data->set_text(oss.str());
-    status("");
+    status("no animal found");
 }
 }      // List all animals
 void Mainwin::on_new_client_click() {
@@ -353,27 +353,14 @@ void Mainwin::on_new_client_click() {
     dialog.add_button("Cancel", 0);
     dialog.show_all();
     if(dialog.run()) {
-        if (e_name.get_text().size() == 0) {
+        if (e_name.get_text().size() == 0  || e_phone.get_text().size() == 0 || e_email.get_text().size() == 0) {
 	 	std::ostringstream oss;    
-   	 	oss <<"NOT ENOUGH INFORMATION";
+   	 	oss <<"PLEASE FILL IN ALL FIELD";
    	 	data->set_text(oss.str());
-   	 	status("");
+   	 	status("new client not added");
 		return;
 	}
-        if (e_phone.get_text().size() == 0) {
-	 	std::ostringstream oss;    
-   	 	oss <<"NOT ENOUGH INFORMATION";
-   	 	data->set_text(oss.str());
-   	 	status("");
-		return;
-	}
-        if (e_email.get_text().size() == 0) {
-	 	std::ostringstream oss;    
-   	 	oss <<"NOT ENOUGH INFORMATION";
-   	 	data->set_text(oss.str());
-   	 	status("");
-		return;
-	}
+        
         shelter->add_client(*(new Client{e_name.get_text(), e_phone.get_text(), e_email.get_text()}));
     }
 
@@ -397,67 +384,67 @@ std::ostringstream oss;
 void Mainwin::on_adopt_animal_click(){
       Gtk::Dialog dialog{"ADOPTION", *this};
 
-    Gtk::Grid grid;
+    	Gtk::Grid grid;
 
-if(shelter->num_clients()>0 && shelter->num_animals()>0){
-    Gtk::Label l_clients{"Client"};
-    Gtk::ComboBoxText c_clients;
-	for(int i=0;i<shelter->num_clients();i++){
+	if(shelter->num_clients()>0 && shelter->num_animals()>0){
+    		Gtk::Label l_clients{"Client"};
+    		Gtk::ComboBoxText c_clients;
+		for(int i=0;i<shelter->num_clients();i++){
 		c_clients.append(shelter->client_name(shelter->client(i)));
+		}
+    		c_clients.set_active(0);
+    		grid.attach(l_clients, 0, 3, 1, 1);
+    		grid.attach(c_clients, 1, 3, 2, 1);
+    		Gtk::Label l_animals{"Animal"};
+    		Gtk::ComboBoxText c_animals;
+		for(int i=0;i<shelter->num_animals();i++){
+			c_animals.append(shelter->animal_name(shelter->animal(i)));	
+		}
+    		c_animals.set_active(0);
+    		grid.attach(l_animals, 0, 4, 1, 1);
+    		grid.attach(c_animals, 1, 4, 2, 1);
+    		dialog.get_content_area()->add(grid);
+    		dialog.add_button("Adopt", 1);
+    		dialog.add_button("Cancel", 0);
+    		dialog.show_all(); 
+    		if(dialog.run()) {
+			std::ostringstream oss;
+        		oss <<"ADOPTION COMPLETED";
+    			data->set_text(oss.str());
+  			status("animal adopted");
+			shelter->adopt(shelter->client(c_clients.get_active_row_number()),
+				shelter->animal(c_animals.get_active_row_number()));
+			shelter->delete_animal(c_animals.get_active_row_number());
+    		}else{
+				std::ostringstream oss;
+        			oss <<"ADOPTED CANCELLED";
+    				data->set_text(oss.str());
+  				status("adoption cancelled");
+		}
+	}else if(shelter->num_animals()<=0 && shelter->num_clients()<=0){
+		std::ostringstream oss;    
+	    	oss <<"SHELTER IS EMPTY";
+	    	data->set_text(oss.str());
+	    	status("please add new animal or client");
+	}else if(shelter->num_clients()<=0){
+		std::ostringstream oss;    
+	    	oss <<"SHELTER HAS NO CLIENT";
+	    	data->set_text(oss.str());
+	    	status("no clients found");
+	}else if(shelter->num_animals()<=0){
+		std::ostringstream oss;    
+	    	oss <<"SHELTER HAS NO AVAILABLE ANIMAL";
+	    	data->set_text(oss.str());
+	    	status("no animal found");
 	}
-    c_clients.set_active(0);
-    grid.attach(l_clients, 0, 3, 1, 1);
-    grid.attach(c_clients, 1, 3, 2, 1);
-    Gtk::Label l_animals{"Animal"};
-    Gtk::ComboBoxText c_animals;
-	for(int i=0;i<shelter->num_animals();i++){
-		c_animals.append(shelter->animal_name(shelter->animal(i)));	}
-    c_animals.set_active(0);
-    grid.attach(l_animals, 0, 4, 1, 1);
-    grid.attach(c_animals, 1, 4, 2, 1);
-    dialog.get_content_area()->add(grid);
-    dialog.add_button("Adopt", 1);
-    dialog.add_button("Cancel", 0);
-    dialog.show_all(); 
-    if(dialog.run()) {
-	std::ostringstream oss;
-        oss <<"ANIMAL ADOPTED";
-    	data->set_text(oss.str());
-  	status("");
-	shelter->adopt(shelter->client(c_clients.get_active_row_number()),  shelter->animal(c_animals.get_active_row_number()));
-	shelter->delete_animal(c_animals.get_active_row_number());
-    }else{
-	std::ostringstream oss;
-        oss <<"ADOPTION CANCELLED";
-    	data->set_text(oss.str());
-  	status("");
-	}
-}else if(shelter->num_animals()<=0 && shelter->num_clients()<=0){
-std::ostringstream oss;    
-    oss <<"NO CLIENTS AND ANIMALS FOUND";
-    data->set_text(oss.str());
-    status("");
-}
-else if(shelter->num_clients()<=0){
-std::ostringstream oss;    
-    oss <<"NO CLIENTS FOUND";
-    data->set_text(oss.str());
-    status("");
-}
-else if(shelter->num_animals()<=0){
-std::ostringstream oss;    
-    oss <<"NO ANIMALS FOUND";
-    data->set_text(oss.str());
-    status("");
-}
 }
 
 void Mainwin::on_list_adopted_click(){
-     Gtk::Dialog dialog{"SELECT CLIENT", *this};
+    Gtk::Dialog dialog{"SELECT CLIENT", *this};
     Gtk::Grid grid;
-if(shelter->num_clients()>0){
-    Gtk::Label l_clients{"Client"};
-    Gtk::ComboBoxText c_clients;
+    if(shelter->num_clients()>0){
+    	Gtk::Label l_clients{"Client"};
+    	Gtk::ComboBoxText c_clients;
 	for(int i=0;i<shelter->num_clients();i++){
 		c_clients.append(shelter->client_name(shelter->client(i)));
 	}
@@ -475,49 +462,49 @@ if(shelter->num_clients()>0){
 		oss<< (i+1) << ". " << shelter->client(c_clients.get_active_row_number()).animal(i) <<"\n" ;
 	}
     	data->set_text(oss.str());
-  	status("");
 	if(shelter->client(c_clients.get_active_row_number()).num_adopted()<=0){
 
 	  std::ostringstream oss;
-  	  oss <<"THIS CLIENT HAS NOT ADOPTED ANY ANIMALS";
+  	  oss <<"THIS CLIENT HAS NOT ADOPTED ANY ANIMAL";
  	  data->set_text(oss.str());
-  	  status("");
+  	  status("not yet adopted");
 	}
     }
-}
-else if(shelter->num_clients()<=0){
-std::ostringstream oss;
-    
-    oss <<"NO CLIENTS FOUND";
-    data->set_text(oss.str());
-    status("");
-}
+    }else if(shelter->num_clients()<=0){
+	std::ostringstream oss;
+	oss <<"SHELTER HAS NO CLIENT";
+	data->set_text(oss.str());
+	status("no clients found");
+    }
 }
 
-	void Mainwin::on_new_shelter_click(){
-		free(shelter);
-		shelter = new Shelter("SHELTER");
-		std::ostringstream oss;
-  	 	oss <<"NEW SHELTER CREATED";
- 	  	data->set_text(oss.str());
-  	 	status("");
+//CREATE NEW SHELTER
+void Mainwin::on_new_shelter_click(){
+	free(shelter);
+	shelter = new Shelter("SHELTER");
+	std::ostringstream oss;
+ 	oss <<"NEW SHELTER";
+  	data->set_text(oss.str());
+ 	status("created new shelter");
+}
 
-	}
-	void Mainwin::on_save_click(){
-		shelter->save();
-		std::ostringstream oss;
-  	 	oss <<"SHELTER SAVED";
- 	  	data->set_text(oss.str());
-  	 	status("");
-  	  	status("default.mass");		
+//SAVE SHELTER AS DEFAULT.MASS
+void Mainwin::on_save_click(){
+	shelter->save();
+	std::ostringstream oss;
+  	oss <<"SUCCESSFULLY SAVED";
+ 	data->set_text(oss.str());
+  	status("saved as default.mass");		
 
-	}
+}
+
+//OPEN SHELTER GIVEN FILENAME
 void Mainwin::on_open_click(){
 	Gtk::FileChooserDialog dialog("Please choose a file",
         Gtk::FILE_CHOOSER_ACTION_OPEN);
   	dialog.set_transient_for(*this);
 
-
+	//BUTTON
   	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
   	dialog.add_button("_Open", Gtk::RESPONSE_OK);
 
@@ -526,29 +513,28 @@ void Mainwin::on_open_click(){
   	filter_any->set_name("Any files");
   	filter_any->add_pattern("*");
   	dialog.add_filter(filter_any);
-
   	auto filter_text = Gtk::FileFilter::create();
   	filter_text->set_name("Mass files");
   	filter_text->add_pattern("*.mass");
   	dialog.add_filter(filter_text);
-
   	auto filter_cpp = Gtk::FileFilter::create();
   	filter_cpp->set_name("C++ files");
   	filter_cpp->add_pattern("*.cpp");
   	filter_cpp->add_pattern("*.h");
   	dialog.add_filter(filter_cpp);
 
-
-
-  	//Show the dialog and wait for a user response:
   	int result = dialog.run();
 	
-  	//Handle the response:
 	switch(result){
     		case(Gtk::RESPONSE_OK):{
 			free(shelter);
 			shelter={new Shelter{shelter->load(dialog.get_filename())}};
-     	 		break;
+     	 		std::ostringstream oss;
+  	 		oss <<"";
+ 	  		data->set_text(oss.str());
+			std::string stat= "opened file at "+ dialog.get_filename();
+  	 		status(stat);
+			break;
    	 	}
    	 	case(Gtk::RESPONSE_CANCEL):{
     	  		break;
@@ -556,32 +542,24 @@ void Mainwin::on_open_click(){
    	 	default:{
    	   		break;
   	 	}
-
 	}
-
-
-
-
-
-
 }
 
-	void Mainwin::on_load_click(){
-		free(shelter);
-		shelter={new Shelter{shelter->load()}};
-		std::ostringstream oss;
-  	 	oss <<"LOADED SHELTER";
- 	  	data->set_text(oss.str());
-  	 	status("");
-  	 	status("default.mass");
-	}
+//LOAD DEFAULT.MASS
+void Mainwin::on_load_click(){
+	free(shelter);
+	shelter={new Shelter{shelter->load()}};
+	std::ostringstream oss;
+  	oss <<"SHELTER LOADED";
+ 	data->set_text(oss.str());
+  	status("loaded default.mass");
+}
 
 void Mainwin::on_save_as_click(){
 	Gtk::FileChooserDialog dialog("SAVE AS",
         Gtk::FILE_CHOOSER_ACTION_SAVE);
   	dialog.set_transient_for(*this);
-
-
+	//BUTTONS
   	dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
   	dialog.add_button("_Save", Gtk::RESPONSE_OK);
 
@@ -590,20 +568,16 @@ void Mainwin::on_save_as_click(){
   	filter_any->set_name("Any files");
   	filter_any->add_pattern("*");
   	dialog.add_filter(filter_any);
-
   	auto filter_text = Gtk::FileFilter::create();
   	filter_text->set_name("Mass files");
   	filter_text->add_pattern("*.mass");
   	dialog.add_filter(filter_text);
-
   	auto filter_cpp = Gtk::FileFilter::create();
   	filter_cpp->set_name("C++ files");
   	filter_cpp->add_pattern("*.cpp");
   	filter_cpp->add_pattern("*.h");
   	dialog.add_filter(filter_cpp);
 	dialog.set_current_name("shelter.mass");
-
-
 
   	//Show the dialog and wait for a user response:
   	int result = dialog.run();
@@ -613,6 +587,11 @@ void Mainwin::on_save_as_click(){
     		case(Gtk::RESPONSE_OK):{
 			std::string s =dialog.get_current_folder()+"/"+dialog.get_current_name();
 			shelter->save(s);
+			std::ostringstream oss;
+  			oss <<"SUCCESSFULLY SAVED";
+ 			data->set_text(oss.str());
+			std::string stat = "saved as "+dialog.get_current_name();
+  			status(stat);
      	 		break;
    	 	}
    	 	case(Gtk::RESPONSE_CANCEL):{
@@ -621,22 +600,19 @@ void Mainwin::on_save_as_click(){
    	 	default:{
    	   		break;
   	 	}
-
 	}
-
-
-
-
-
-
-
-
-
-
-
 }
 
-	void Mainwin::on_about_click(){}
+void Mainwin::on_about_click(){
+	Gtk::AboutDialog dialog;
+	dialog.set_logo_default();
+	dialog.set_version("Version 2.0");
+	dialog.set_copyright("Created by Hoang Luu\n1000969998");
+	dialog.set_license("For presentation purpose only\nNOT FOR SALE");
+	dialog.set_website_label("our website");
+	dialog.set_website("www.google.com");
+	dialog.run();
+}
 
 // /////////////////
 // U T I L I T I E S
